@@ -1,0 +1,117 @@
+
+!
+! Last configuration change at 18:34:23 UTC Mon Feb 26 2024
+!
+version 16.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+!
+hostname R2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+ipv6 unicast-routing
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+license udi pid ISR4221/K9 sn FGL2403LNP1
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+!
+!
+username R1 password 0 victor
+username R3 password 0 isaias
+!
+redundancy
+ mode none
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0/0
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface GigabitEthernet0/0/1
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface Serial0/1/0
+ ip address 10.3.3.5 255.255.255.252
+ encapsulation ppp
+ ipv6 address 2001:DB8:85A3:1::B:2/64
+ ppp authentication pap
+ ppp pap sent-username R2 password 0 rodrigo
+!
+interface Serial0/1/1
+ ip address 10.3.3.2 255.255.255.252
+ encapsulation ppp
+ ipv6 address 2001:DB8:85A3::A:2/64
+ ppp authentication pap
+ ppp pap sent-username R2 password 0 rodrigo
+!
+router ospf 1
+ router-id 2.2.2.2
+ network 10.3.3.0 0.0.0.3 area 1
+ network 10.3.3.4 0.0.0.3 area 1
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ transport input none
+ stopbits 1
+line vty 0 4
+ login
+!
+!
+!
+!
+!
+!
+end
