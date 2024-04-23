@@ -1,0 +1,109 @@
+
+!
+! Last configuration change at 18:01:39 UTC Mon Apr 22 2024
+!
+version 16.6
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+no platform punt-keepalive disable-kernel-core
+!
+hostname R2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+license udi pid ISR4221/K9 sn FGL2403LNP1
+diagnostic bootup level minimal
+spanning-tree extend system-id
+!
+!
+!
+!
+redundancy
+ mode none
+!
+!
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0/0
+ ip address 172.16.20.1 255.255.255.224
+ ip nat inside
+ negotiation auto
+!
+interface GigabitEthernet0/0/1
+ ip address 10.10.10.1 255.255.255.224
+ ip nat inside
+ negotiation auto
+!
+interface Serial0/1/0
+ ip address 20.20.20.2 255.255.255.252
+ ip nat outside
+!
+interface Serial0/1/1
+ no ip address
+ shutdown
+!
+ip nat pool NAT-POOL2 121.30.54.20 121.30.54.29 netmask 255.255.255.224
+ip nat inside source static 10.10.10.10 203.50.67.10
+ip nat inside source list 1 pool NAT-POOL2
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+ip route 0.0.0.0 0.0.0.0 Serial0/1/0
+ip route 148.226.80.0 255.255.255.0 20.20.20.1
+!
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+access-list 1 permit 172.16.20.0 0.0.0.31
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ transport input none
+ stopbits 1
+line vty 0 4
+ login
+!
+!
+!
+!
+!
+!
+end
